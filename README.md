@@ -1,7 +1,5 @@
 # Discord AI Image Generation Bot
 
-![Banner](https://via.placeholder.com/800x200?text=Discord+AI+Image+Bot)
-
 ## Overview
 
 This is a Discord bot designed for AI image generation using the NovelAI API. The bot can generate anime-style and other artistic images based on user prompts, offering several customization options. It temporarily stores the generated images on a Node.js server, sends them to Discord, and deletes the temporary files afterward.
@@ -62,8 +60,8 @@ Get help with the bot.
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-repo-name/discord-ai-image-bot.git
-   cd discord-ai-image-bot
+   git clone https://github.com/SecurityDevice/novelai-discord-bot.git
+   cd novelai-discord-bot
    ```
 
 2. **Install Dependencies**
@@ -71,11 +69,14 @@ Get help with the bot.
    npm install
    ```
 
-3. **Set Up Environment Variables**
-   Create a `.env` file in the root directory and add the following:
-   ```env
-   DISCORD_TOKEN=your_discord_bot_token
-   NOVELAI_API_KEY=your_novelai_api_key
+3. **Configure the Bot**
+   Open the `bot.js` file and set your configuration values directly:
+   ```javascript
+   ////// CONFIGURATION //////
+   const apiToken = 'your_novelai_api_key';
+   const discordBotToken = 'your_discord_bot_token';
+   const clientId = 'your_client_id';
+   const GUILD_ID = 'your_guild_id';
    ```
 
 4. **Start the Bot**
@@ -93,14 +94,6 @@ Get help with the bot.
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Submit a pull request with a detailed explanation of your changes.
-
----
 
 ## License
 
