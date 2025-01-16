@@ -1,0 +1,21 @@
+{
+    "name": "discord-bot",
+    "version": "1.0.0",
+    "description": "Discord bot for the novelai api",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "dependencies": {
+        "@discordjs/rest": "^0.1.0-canary.0",
+        "axios": "^0.24.0",
+        "discord-api-types": "^0.25.2",
+        "discord.js": "^13.3.1",
+        "fs": "0.0.1-security",
+        "jszip": "^3.7.1",
+        "sharp": "^0.33.3",
+        "uuid": "^8.3.2"
+    },
+    "author": "SecurityDevice + dominikdomex",
+    "license": "MIT"
+}
