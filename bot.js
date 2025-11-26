@@ -34,8 +34,6 @@ client.on('messageCreate', async message => {
     }
 });
 
-
-
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
@@ -52,23 +50,58 @@ client.on('interactionCreate', async interaction => {
             const model = interaction.options.getString('model');
      
             const [width, height] = resolution.split('x').map(Number);
-            qualityToggle = true;
-            scales = 5;
+            let qualityToggle = true;
+            let scales = 5;
             const sampler = interaction.options.getString('sampler');
       
             const response = await axios.post('https://image.novelai.net/ai/generate-image', {
                 input: prompt,
-                parameters: {
-                    negative_prompt: negative_prompt,
-                    width: width,
-                    height: height,
-                    steps: steps,
-                    qualityToggle: qualityToggle,
-                    scale: scales,
-                    sampler: sampler
-                },
                 model: model,
                 action: 'generate',
+                parameters: {
+                    params_version: 3,
+                    width: width,
+                    height: height,
+                    scale: scales,
+                    sampler: sampler,
+                    steps: steps,
+                    n_samples: 1,
+                    ucPreset: 0,
+                    qualityToggle: qualityToggle,
+                    autoSmea: false,
+                    dynamic_thresholding: false,
+                    controlnet_strength: 1,
+                    legacy: false,
+                    add_original_image: true,
+                    cfg_rescale: 0,
+                    noise_schedule: 'karras',
+                    legacy_v3_extend: false,
+                    skip_cfg_above_sigma: null,
+                    use_coords: false,
+                    legacy_uc: false,
+                    normalize_reference_strength_multiple: true,
+                    inpaintImg2ImgStrength: 1,
+                    seed: Math.floor(Math.random() * 4294967295),
+                    characterPrompts: [],
+                    v4_prompt: {
+                        caption: {
+                            base_caption: prompt,
+                            char_captions: []
+                        },
+                        use_coords: false,
+                        use_order: true
+                    },
+                    v4_negative_prompt: {
+                        caption: {
+                            base_caption: negative_prompt,
+                            char_captions: []
+                        },
+                        legacy_uc: false
+                    },
+                    negative_prompt: negative_prompt,
+                    deliberate_euler_ancestral_bug: false,
+                    prefer_brownian: true
+                }
             }, {
                 headers: {
                     'Authorization': `Bearer ${apiToken}`
@@ -101,7 +134,6 @@ client.on('interactionCreate', async interaction => {
 
         let spoilerFilename = "SPOILER_" + filename;
         await interaction.editReply({ files: [{ attachment: filename, name: spoilerFilename }] });
-        // add mebed with command interactions
         const embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Anime Generator')
@@ -131,8 +163,6 @@ client.on('interactionCreate', async interaction => {
 }
 });
 
-
-
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
@@ -145,14 +175,11 @@ client.on('interactionCreate', async interaction => {
             const filesname = `${uuidv4()}.png`;
             const imagePath = `./${filesname}`;
             
-
             const responses = await axios.get(reference_image_multiple.url, { responseType: 'arraybuffer' });
             const buffer = Buffer.from(responses.data, 'binary');
             
-
             fs.writeFileSync(imagePath, buffer);
             
-  
             const files = fs.readFileSync(imagePath);
             const base64Image = Buffer.from(files).toString('base64');
 
@@ -166,25 +193,60 @@ client.on('interactionCreate', async interaction => {
             const sampler = interaction.options.getString('sampler');
 
             const [width, height] = resolution.split('x').map(Number);
-            qualityToggle = true;
-            scales = 5;
+            let qualityToggle = true;
+            let scales = 5;
 
             const response = await axios.post('https://image.novelai.net/ai/generate-image', {
                 input: prompt,
-                parameters: {
-                    negative_prompt: negative_prompt,
-                    width: width,
-                    height: height,
-                    steps: steps,
-                    qualityToggle: qualityToggle,
-                    scale: scales,
-                    sampler: sampler,
-                    reference_information_extracted_multiple: [reference_information_extracted_multiple],
-                    reference_image_multiple: [base64Image], //image
-                    reference_strength_multiple: [reference_strength_multiple]
-                },
                 model: model,
                 action: 'generate',
+                parameters: {
+                    params_version: 3,
+                    width: width,
+                    height: height,
+                    scale: scales,
+                    sampler: sampler,
+                    steps: steps,
+                    n_samples: 1,
+                    ucPreset: 0,
+                    qualityToggle: qualityToggle,
+                    autoSmea: false,
+                    dynamic_thresholding: false,
+                    controlnet_strength: 1,
+                    legacy: false,
+                    add_original_image: true,
+                    cfg_rescale: 0,
+                    noise_schedule: 'karras',
+                    legacy_v3_extend: false,
+                    skip_cfg_above_sigma: null,
+                    use_coords: false,
+                    legacy_uc: false,
+                    normalize_reference_strength_multiple: true,
+                    inpaintImg2ImgStrength: 1,
+                    seed: Math.floor(Math.random() * 4294967295),
+                    characterPrompts: [],
+                    v4_prompt: {
+                        caption: {
+                            base_caption: prompt,
+                            char_captions: []
+                        },
+                        use_coords: false,
+                        use_order: true
+                    },
+                    v4_negative_prompt: {
+                        caption: {
+                            base_caption: negative_prompt,
+                            char_captions: []
+                        },
+                        legacy_uc: false
+                    },
+                    negative_prompt: negative_prompt,
+                    deliberate_euler_ancestral_bug: false,
+                    prefer_brownian: true,
+                    reference_information_extracted_multiple: [reference_information_extracted_multiple],
+                    reference_image_multiple: [base64Image],
+                    reference_strength_multiple: [reference_strength_multiple]
+                }
             }, {
                 headers: {
                     'Authorization': `Bearer ${apiToken}`
@@ -217,7 +279,6 @@ client.on('interactionCreate', async interaction => {
     
             let spoilerFilename = "SPOILER_" + filename;
             await interaction.editReply({ files: [{ attachment: filename, name: spoilerFilename }] });
-            // add mebed with command interactions
             const embed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Anime Generator')
@@ -237,11 +298,9 @@ client.on('interactionCreate', async interaction => {
                 )
                 .setTimestamp()
                 .setFooter('by SecurityDevice + dominikdomex');
-            // send embed in the same channel for everyone
             await interaction.channel.send({ embeds: [embed] });
             await interaction.channel.send("--------END OF FILE-------")
 
-            // add a wait
             await new Promise(resolve => setTimeout(resolve, 5000));
             fs.unlinkSync(filename);
             await new Promise(resolve => setTimeout(resolve, 5000));
@@ -270,21 +329,55 @@ client.on('interactionCreate', async interaction => {
             let qualityToggle = true;
             let scales = 5;
 
-            // Loop to generate and send 5 images sequentially
             for (let i = 0; i < 5; i++) {
                 const response = await axios.post('https://image.novelai.net/ai/generate-image', {
                     input: prompt,
-                    parameters: {
-                        negative_prompt: negative_prompt,
-                        width: width,
-                        height: height,
-                        steps: steps,
-                        qualityToggle: qualityToggle,
-                        scale: scales,
-                        sampler: sampler
-                    },
                     model: model,
                     action: 'generate',
+                    parameters: {
+                        params_version: 3,
+                        width: width,
+                        height: height,
+                        scale: scales,
+                        sampler: sampler,
+                        steps: steps,
+                        n_samples: 1,
+                        ucPreset: 0,
+                        qualityToggle: qualityToggle,
+                        autoSmea: false,
+                        dynamic_thresholding: false,
+                        controlnet_strength: 1,
+                        legacy: false,
+                        add_original_image: true,
+                        cfg_rescale: 0,
+                        noise_schedule: 'karras',
+                        legacy_v3_extend: false,
+                        skip_cfg_above_sigma: null,
+                        use_coords: false,
+                        legacy_uc: false,
+                        normalize_reference_strength_multiple: true,
+                        inpaintImg2ImgStrength: 1,
+                        seed: Math.floor(Math.random() * 4294967295),
+                        characterPrompts: [],
+                        v4_prompt: {
+                            caption: {
+                                base_caption: prompt,
+                                char_captions: []
+                            },
+                            use_coords: false,
+                            use_order: true
+                        },
+                        v4_negative_prompt: {
+                            caption: {
+                                base_caption: negative_prompt,
+                                char_captions: []
+                            },
+                            legacy_uc: false
+                        },
+                        negative_prompt: negative_prompt,
+                        deliberate_euler_ancestral_bug: false,
+                        prefer_brownian: true
+                    }
                 }, {
                     headers: {
                         'Authorization': `Bearer ${apiToken}`
@@ -309,21 +402,14 @@ client.on('interactionCreate', async interaction => {
                     console.log('The generated file is not an image.');
                     return;
                 }
-                await interaction.editReply({ content: 'Türken Raus' });
+                await interaction.editReply({ content: 'Bilder werden generiert...' });
                 let spoilerFilename = "SPOILER_" + filename;
-                
-
-               
-
-                // Send embed in the same channel for everyone
 
                 await interaction.channel.send({ files: [{ attachment: filename, name: spoilerFilename }] });
                 await interaction.channel.send("--------END OF FILE-------");
 
-                // Wait before continuing
                 await new Promise(resolve => setTimeout(resolve, 5000));
 
-                // Delete the file before generating the next image
                 fs.unlinkSync(filename);
             }
 
@@ -333,12 +419,10 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
     if (interaction.commandName === 'help') {
-        //embed
         const helpembed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Help')
@@ -351,19 +435,14 @@ client.on('interactionCreate', async interaction => {
             )
             .setTimestamp()
             .setFooter('COPYRIGHT ||| by SecurityDevice + dominikdomex');
-            // send embed in the same channel for everyone
         await interaction.reply({ embeds: [helpembed] });
     }
 });
 
-
-
 client.once('ready', () => {
     console.log('ready');
-    //  activity
     client.user.setActivity('/help | by SecurityDevice + dominikdomex', { type: 'WATCHING' });
 });
-
 
 const commands = [
     {
@@ -406,12 +485,12 @@ const commands = [
                 required: true,
                 choices: [
                     {
-                        name: 'Anime',
-                        value: 'nai-diffusion-3',
+                        name: 'V4.5 Full',
+                        value: 'nai-diffusion-4-5-full',
                     },
                     {
-                        name: 'Furry',
-                        value: 'nai-diffusion-furry-3',
+                        name: 'V4.5 Curated',
+                        value: 'nai-diffusion-4-5-curated',
                     },
                 ],
             },
@@ -497,12 +576,12 @@ const commands = [
                 required: true,
                 choices: [
                     {
-                        name: 'Anime',
-                        value: 'nai-diffusion-3',
+                        name: 'V4.5 Full',
+                        value: 'nai-diffusion-4-5-full',
                     },
                     {
-                        name: 'Furry',
-                        value: 'nai-diffusion-furry-3',
+                        name: 'V4.5 Curated',
+                        value: 'nai-diffusion-4-5-curated',
                     },
                 ],
             },
@@ -588,12 +667,12 @@ const commands = [
                 required: true,
                 choices: [
                     {
-                        name: 'Anime',
-                        value: 'nai-diffusion-3',
+                        name: 'V4.5 Full',
+                        value: 'nai-diffusion-4-5-full',
                     },
                     {
-                        name: 'Furry',
-                        value: 'nai-diffusion-furry-3',
+                        name: 'V4.5 Curated',
+                        value: 'nai-diffusion-4-5-curated',
                     },
                 ],
             },
@@ -692,14 +771,8 @@ const commands = [
     }
 ];
 
-
-
-
-
-
 rest.put(Routes.applicationGuildCommands(clientId, GUILD_ID), { body: commands })
   .then(() => console.log('Created slash-parameters.'))
   .catch(console.error);
-
 
 client.login(discordBotToken).catch(console.error);
