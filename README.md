@@ -24,7 +24,7 @@ Generate a single anime-style image.
   - `prompt` (Required): Describe the image you want.
   - `negative_prompt` (Required): Specify elements to exclude.
   - `sampler` (Required): Choose between `DPM++ 2s Ancestral` or `Euler (Standard)`.
-  - `model` (Required): Select `Anime` or `Furry`.
+  - `model` (Required).
   - `steps` (Required): Choose between `15` or `28` steps.
   - `resolution` (Required): Choose from `832x1216`, `512x512`, `1216x832`, or `1024x1024`.
 
